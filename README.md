@@ -10,8 +10,9 @@ interface Field {
 }
 
 type SchemaData = Field[];
+
 <FieldSelector
   schema={schemaData}
-  onSelect={(path: string) => void}
+  onSelect={(path: string[]) => void}
 />
 ```
