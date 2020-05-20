@@ -19,15 +19,18 @@ jobs:
     - name: install dependencies
       run: |
         npm install
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
 
     - name: build dist
       run: |
         npm run build-dist
 
+    - uses: actions/setup-node@master
+      with:
+        node-version: 14
+        registry-url: https://npm.pkg.github.com/
     - name: publish dist
       env:
         NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-      run: |
-        npm publish
+        run: |
+          npm publish
+
