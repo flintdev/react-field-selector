@@ -3,30 +3,35 @@ name: publish-tagging
 on:
   push:
     tags:
-    - 'v*'
+      - 'v*'
 jobs:
   build_npm_package:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: master
+      - uses: actions/checkout@v2
+        with:
+          ref: master
 
-    - uses: actions/setup-node@master
-      with:
+      - uses: actions/setup-node@master
+        with:
         node-version: 14.0
-        registry-url: https://registry.npmjs.org/
-      run: |
-        npm install
-        npm run build-dist
+          registry-url: https://registry.npmjs.org/
 
-    - uses: actions/setup-node@master
-      with:
-        node-version: 14.0
-        registry-url: https://npm.pkg.github.com/
-    - name: publish dist
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-      run: |
+      - name: install dependencies
+        run: |
+          npm install
+
+      - name: build dist
+        run: |
+          npm run build-dist
+
+      - uses: actions/setup-node@master
+        with:
+          node-version: 14.0
+          registry-url: https://npm.pkg.github.com/
+      - name: publish dist
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+        run: |
           npm publish
 
