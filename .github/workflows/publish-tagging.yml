@@ -15,13 +15,12 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: 14.0
-        registry-url: https://registry.npmjs.org/
 
     - name: install dependencies
       run: |
         npm install
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
 
     - name: build dist
       run: |
@@ -29,6 +28,6 @@ jobs:
 
     - name: publish dist
       env:
-        NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        NODE_AUTH_TOKEN: ${{secrets.npm_token}}
       run: |
         npm publish
