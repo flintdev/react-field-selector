@@ -2,8 +2,8 @@ name: publish-tagging
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - release
 jobs:
   build_npm_package:
     runs-on: ubuntu-latest

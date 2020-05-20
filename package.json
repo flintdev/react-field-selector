@@ -1,6 +1,6 @@
 {
   "name": "@flintdev/react-field-selector",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "npm package - react field selector tree view",
   "main": "dist/index.js",
   "scripts": {

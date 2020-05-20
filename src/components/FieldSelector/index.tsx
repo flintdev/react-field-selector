@@ -4,8 +4,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 
 export interface Field {
     name: string,
@@ -137,14 +135,23 @@ export class FieldSelector extends React.Component<FieldSelectorProps, any> {
         return schema.map(({contains, startIndex, value}, i) => {
             const nodeId = this.getNodeId();
             if (contains) this.searchedNode.push(nodeId);
-            const {name, children} = value;
+            const {name, children, dataType, required} = value;
             let nameDisplay = name;
             if (startIndex.length > 0) {
                 nameDisplay = highlightWords(startIndex, name, searchValue.length);
             }
             this.nodeIdToPath[nodeId] = path.concat(name);
             return (
-                <TreeItem key={i} nodeId={nodeId} label={nameDisplay}>
+                <TreeItem key={i} nodeId={nodeId} label={
+                    (<div style={{display: "flex"}}>
+                        <div style={{flexGrow: 1, fontWeight: required ? "bold": "unset"}}>
+                            {nameDisplay}
+                        </div>
+                        <span style={{color: "lightgrey", paddingRight: 5}}>
+                            {dataType}
+                        </span>
+                    </div>)
+                }>
                     {!!children && this.renderTreeItems(children, path.concat(name))}
                 </TreeItem>
             );
@@ -167,18 +174,14 @@ export class FieldSelector extends React.Component<FieldSelectorProps, any> {
 
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
-                <div>
-                    <InputBase
-                        placeholder="search"
-                        margin="dense"
-                        inputProps={{'aria-label': 'search google maps'}}
-                        value={searchValue}
-                        onChange={this.handleSearchChange}
-                    />
-                    <IconButton type="submit" aria-label="search" size="small">
-                        <SearchIcon/>
-                    </IconButton>
-                </div>
+                <InputBase
+                    style={{width: "100%", padding: "0px 5px", borderBottom: "2px solid gray"}}
+                    placeholder="search"
+                    margin="dense"
+                    inputProps={{'aria-label': 'search google maps'}}
+                    value={searchValue}
+                    onChange={this.handleSearchChange}
+                />
                 <TreeView
                     expanded={expanded}
                     defaultCollapseIcon={<ExpandMoreIcon/>}
