@@ -1,0 +1,17 @@
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+src
+docs
+node_modules
+.gitignore
+jest.config.js
+LICENSE
+package-lock.json
+README.md
+tsconfig.json
+webpack.config.js
+example
