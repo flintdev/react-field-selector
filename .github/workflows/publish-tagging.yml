@@ -6,9 +6,8 @@ on:
     - 'v*'
 jobs:
   build_npm_package:
-    runs-on:ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
-
     - uses: actions/checkout@v2
       with:
         ref: master
@@ -21,14 +20,14 @@ jobs:
       run: |
         npm install
 
-    - name: build electron to dist
+    - name: build dist
       run: |
         npm run build-dist
 
-    - name: publish electron to dist
+    - name: publish dist
       with:
         registry-url: https://npm.pkg.github.com/flintdev
       env:
-        NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       run: |
         npm publish
