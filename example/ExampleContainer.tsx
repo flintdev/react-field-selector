@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {FieldSelector, SchemaData} from "../dist";
+import {FieldSelector, SchemaData} from "../src";
 import {Paper} from "@material-ui/core";
 
 const schemaData = [
@@ -46,7 +46,8 @@ export default class App extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            path: []
+            path: [],
+            schemaData: schemaData
         };
     }
 
@@ -55,17 +56,24 @@ export default class App extends React.Component<any, any> {
         console.log('>>> FieldSelector.onSelect.path', path);
     };
 
+    handleInputChange = (e: any) => {
+        this.setState({schemaData: JSON.parse(e.target.value)})
+    };
+
     render() {
-        const {path} = this.state;
+        const {path, schemaData} = this.state;
         return (
-            <div className="fit-parent" style={{display: "flex"}}>
-                <Paper style={{height: "100vh"}}>
+            <div style={{height: "100vh", width: "100vw", display: "flex"}}>
+                <Paper style={{width: 300}}>
                     <FieldSelector
                         schema={schemaData}
                         onSelect={this.handleSelect}
                     />
                 </Paper>
-                {pathToString(path)}
+                <div style={{display: "flex", flexDirection: "column"}} className="fit-parent">
+                    {pathToString(path)}
+                    <textarea style={{flexGrow: 1}} onChange={this.handleInputChange} value={JSON.stringify(schemaData, null, 4)}/>
+                </div>
             </div>
         );
     }
