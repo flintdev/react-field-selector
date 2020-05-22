@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {FieldSelector, SchemaData} from "../src";
+import {FieldSelector, SchemaData} from "../dist";
 import {Paper} from "@material-ui/core";
 
 const schemaData = [
