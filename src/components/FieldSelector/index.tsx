@@ -94,12 +94,25 @@ export class FieldSelector extends React.Component<FieldSelectorProps, any> {
         this.searchedNode = [];
     }
 
-    handleToggle = (event: React.ChangeEvent<{}>, nodeIds: string[]) => {
+    handleToggleDoubleClick = (event: any, nodeId: string) => {
+        const expanded = this.state.expanded;
+        const findIndex = expanded.indexOf(nodeId);
+        if (findIndex !== -1) {
+            expanded.splice(findIndex, 1);
+        } else {
+            expanded.push(nodeId);
+        }
+        this.setState({expanded: expanded, isSearching: false});
+    };
+
+    handleToggle = (event: any, nodeIds: string[]) => {
         this.setState({expanded: nodeIds, isSearching: false});
     };
 
-    handleSelect = (event: React.ChangeEvent<{}>, nodeIds: string[]) => {
-        this.props.onSelect(this.nodeIdToPath[nodeIds[0]]);
+    handleSelect = (event: any, nodeId: string) => {
+        event.stopPropagation();
+        event.preventDefault();
+        this.props.onSelect(this.nodeIdToPath[nodeId]);
     };
 
     postOrder = (node: any) => {
@@ -143,8 +156,11 @@ export class FieldSelector extends React.Component<FieldSelectorProps, any> {
             this.nodeIdToPath[nodeId] = path.concat(name);
             return (
                 <TreeItem key={i} nodeId={nodeId} label={
-                    (<div style={{display: "flex"}}>
-                        <div style={{flexGrow: 1, fontWeight: required ? "bold": "unset"}}>
+                    (<div style={{display: "flex"}}
+                          onClick={(e) => this.handleSelect(e, nodeId)}
+                          onDoubleClick={(e) => this.handleToggleDoubleClick(e, nodeId)}
+                    >
+                        <div style={{flexGrow: 1, fontWeight: required ? "bold" : "unset", userSelect: "none"}}>
                             {nameDisplay}
                         </div>
                         <span style={{color: "lightgrey", paddingRight: 5}}>
@@ -187,7 +203,6 @@ export class FieldSelector extends React.Component<FieldSelectorProps, any> {
                     defaultCollapseIcon={<ExpandMoreIcon/>}
                     defaultExpandIcon={<ChevronRightIcon/>}
                     onNodeToggle={this.handleToggle}
-                    onNodeSelect={this.handleSelect}
                 >
                     {this.handleSearchRender(schema)}
                 </TreeView>
